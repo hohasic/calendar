@@ -1,5 +1,6 @@
 package com.office.calendar.member;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +39,51 @@ public class MemberController {
 
         int result = memberService.signupConfirm(memberDto);
         model.addAttribute("result", result);
+
+        return nextPage;
+
+    }
+
+    // 로그인 양식 /signin
+    @GetMapping("/signin")
+    public String signin() {
+        System.out.println(CLASS_NAME.concat("signin()"));
+
+        String nextPage = "member/signin_form";
+
+        return nextPage;
+
+    }
+
+    // 로그인 확인 /signin_confirm
+    @PostMapping("/signin_confirm")
+    public String signinConfirm(MemberDto memberDto,
+                                Model model,
+                                HttpSession session) {
+        System.out.println(CLASS_NAME.concat("signinConfirm()"));
+
+        String nextPage = "member/signin_result";
+
+        String loginedID = memberService.signinConfirm(memberDto);
+        model.addAttribute("loginedID", loginedID);
+
+        if (loginedID != null) {
+            session.setAttribute("loginedID", loginedID);
+            session.setMaxInactiveInterval(60 * 30);
+        }
+
+        return nextPage;
+
+    }
+
+    // 로그 아웃 /signout_confirm
+    @GetMapping("/signout_confirm")
+    public String signoutConfirm(HttpSession session) {
+        System.out.println(CLASS_NAME.concat("signoutConfirm()"));
+
+        String nextPage = "redirect:/";
+
+        session.invalidate();
 
         return nextPage;
 

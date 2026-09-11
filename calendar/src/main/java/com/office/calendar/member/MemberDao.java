@@ -1,7 +1,13 @@
 package com.office.calendar.member;
 
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class MemberDao {
@@ -46,6 +52,29 @@ public class MemberDao {
         }
 
         return result;
+
+    }
+
+    public MemberDto selectMemberByID(String id) {
+        System.out.println(CLASS_NAME.concat("isMember()"));
+
+        String sql = "SELECT * FROM USER_MEMBER WHERE ID = ?";
+
+        List<MemberDto> memberDtos = new ArrayList<>();
+
+        try {
+            RowMapper<MemberDto> rowMapper = BeanPropertyRowMapper.newInstance(MemberDto.class);
+            memberDtos = jdbcTemplate.query(sql, rowMapper, id);
+
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+        return memberDtos.size() > 0 ? memberDtos.get(0) : null;
 
     }
 }

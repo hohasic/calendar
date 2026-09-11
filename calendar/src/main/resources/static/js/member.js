@@ -26,3 +26,23 @@ function signupForm() {
     }
 
 }
+
+function signinForm() {
+    console.log('signinForm() CALLED!!');
+
+    let form = document.signin_form;
+
+    if (form.id.value === '') {
+        alert('INPUT MEMBER ID!!');
+        form.id.focus();
+
+    } else if (form.pw.value === '') {
+        alert('INPUT MEMBER PW!!');
+        form.pw.focus();
+
+    } else {
+        form.submit();
+
+    }
+
+}
