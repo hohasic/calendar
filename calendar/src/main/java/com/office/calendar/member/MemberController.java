@@ -89,4 +89,33 @@ public class MemberController {
 
     }
 
+    // 계정 수정 양식(/member/modify)
+    @GetMapping("/modify")
+    public String modify(HttpSession session, Model model) {
+        System.out.println(CLASS_NAME.concat("modify()"));
+
+        String nextPage = "member/modify_form";
+
+        String loginedID = String.valueOf(session.getAttribute("loginedID"));
+        MemberDto loginedMemberDto = memberService.modify(loginedID);
+        model.addAttribute("loginedMemberDto", loginedMemberDto);
+
+        return nextPage;
+
+    }
+
+    // 계정 수정 확인(/member/modify_confirm)
+    @PostMapping("/modify_confirm")
+    public String modifyConfirm(MemberDto memberDto, Model model) {
+        System.out.println(CLASS_NAME.concat("modifyConfirm()"));
+
+        String nextPage = "member/modify_result";
+
+        int result = memberService.modifyConfirm(memberDto);
+        model.addAttribute("result", result);
+
+        return nextPage;
+
+    }
+
 }

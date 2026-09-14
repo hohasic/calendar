@@ -57,4 +57,21 @@ public class MemberService {
         }
 
     }
+
+    public MemberDto modify(String loginedID) {
+        System.out.println(CLASS_NAME.concat("modify()"));
+
+        return memberDao.selectMemberByID(loginedID);
+
+    }
+
+    public int modifyConfirm(MemberDto memberDto) {
+        System.out.println(CLASS_NAME.concat("modifyConfirm()"));
+
+        String encodedPW = passwordEncoder.encode(memberDto.getPw());
+        memberDto.setPw(encodedPW);
+
+        return memberDao.updateMember(memberDto);
+
+    }
 }

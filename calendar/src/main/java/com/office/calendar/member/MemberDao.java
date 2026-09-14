@@ -77,4 +77,33 @@ public class MemberDao {
         return memberDtos.size() > 0 ? memberDtos.get(0) : null;
 
     }
+
+    public int updateMember(MemberDto memberDto) {
+        System.out.println(CLASS_NAME.concat("updateMember()"));
+
+        String sql =    "UPDATE " +
+                            "USER_MEMBER " +
+                        "SET " +
+                            "PW = ?, " +
+                            "MAIL = ?, " +
+                            "PHONE = ? " +
+                        "WHERE " +
+                            "NO = ?";
+
+        int result = -1;
+        try {
+            result = jdbcTemplate.update(sql,
+                                            memberDto.getPw(),
+                                            memberDto.getMail(),
+                                            memberDto.getPhone(),
+                                            memberDto.getNo());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+        return result;
+
+    }
 }
