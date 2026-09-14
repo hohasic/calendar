@@ -118,4 +118,29 @@ public class MemberController {
 
     }
 
+    // 비밀번호 찾기 양식(/member/findpassword)
+    @GetMapping("/findpassword")
+    public String findpassword(MemberDto memberDto, Model model) {
+        System.out.println(CLASS_NAME.concat("findpassword()"));
+
+        String nextPage = "member/findpassword_form";
+
+        return nextPage;
+
+    }
+
+    // 비밀번호 찾기 확인(/member/findpassword_confirm)
+    @PostMapping("/findpassword_confirm")
+    public String findpasswordConfirm(MemberDto memberDto, Model model) {
+        System.out.println(CLASS_NAME.concat("findpasswordConfirm()"));
+
+        String nextPage = "member/findpassword_result";
+
+        int result = memberService.findpasswordConfirm(memberDto);
+        model.addAttribute("result", result);
+
+        return nextPage;
+
+    }
+
 }

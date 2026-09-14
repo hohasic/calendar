@@ -1,5 +1,6 @@
 package com.office.calendar.member;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -97,6 +98,48 @@ public class MemberDao {
                                             memberDto.getMail(),
                                             memberDto.getPhone(),
                                             memberDto.getNo());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+        return result;
+
+    }
+
+    public MemberDto selectMemberByIDAndMail(MemberDto memberDto) {
+        System.out.println(CLASS_NAME.concat("selectMemberByIDAndMail()"));
+
+        String sql = "SELECT " +
+                     "* " +
+                    "FROM " +
+                        "USER_MEMBER " +
+                    "WHERE " +
+                        "ID=? AND MAIL=?";
+
+        List<MemberDto> memberDtos = new ArrayList<>();
+        try {
+            RowMapper<MemberDto> rowMapper = BeanPropertyRowMapper.newInstance(MemberDto.class);
+            memberDtos = jdbcTemplate.query(sql, rowMapper, memberDto.getId(), memberDto.getMail());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+        return memberDtos.size() > 0 ? memberDtos.get(0) : null;
+
+    }
+
+    public int updatePassword(String id, String encodedNewPw) {
+        System.out.println(CLASS_NAME.concat("updatePassword()"));
+
+        String sql = "UPDATE USER_MEMBER SET PW = ? WHERE ID = ?";
+
+        int result = -1;
+        try {
+            result = jdbcTemplate.update(sql, encodedNewPw, id);
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -72,3 +72,23 @@ function modifyForm() {
     }
 
 }
+
+// 비밀번호 찾기 데이터 유효성 검사
+function findpasswordForm() {
+    console.log('findpasswordForm()');
+
+    let form = document.findpassword_form;
+    if (form.id.value === '') {
+        alert('INPUT MEMBER ID!!')
+        form.id.focus();
+
+    } else if (form.mail.value === '') {
+        alert('INPUT MEMBER MAIL!!')
+        form.mail.focus();
+
+    } else {
+        form.submit();
+
+    }
+
+}
