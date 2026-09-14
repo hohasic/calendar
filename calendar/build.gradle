@@ -21,6 +21,11 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+
+	all {
+		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+	}
+
 }
 
 dependencies {
@@ -42,6 +47,9 @@ dependencies {
 
 	// Source: https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	// Source: https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-log4j2
+	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-thymeleaf-test'
