@@ -1,5 +1,6 @@
 package com.office.calendar.member;
 
+import com.office.calendar.member.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,7 +11,7 @@ import java.security.SecureRandom;
 import java.util.Date;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class MemberService {
 
     final private String CLASS_NAME = "[MemberService] ";
@@ -22,26 +23,31 @@ public class MemberService {
     final private MemberDao memberDao;
     final private PasswordEncoder passwordEncoder;
     final private JavaMailSender javaMailSender;
+    final private MemberMapper memberMapper;
 
-    /*
+
     public MemberService(MemberDao memberDao,
                          PasswordEncoder passwordEncoder,
-                         JavaMailSender javaMailSender) {
+                         JavaMailSender javaMailSender,
+                         MemberMapper memberMapper) {
         this.memberDao = memberDao;
         this.passwordEncoder = passwordEncoder;
         this.javaMailSender = javaMailSender;
+        this.memberMapper = memberMapper;
     }
-    */
+
 
     public int signupConfirm(MemberDto memberDto) {
         System.out.println(CLASS_NAME.concat("signupConfirm()"));
 
-        boolean isMember = memberDao.isMember(memberDto.getId());
+//        boolean isMember = memberDao.isMember(memberDto.getId());
+        boolean isMember = memberMapper.isMember(memberDto.getId());
 
         if (!isMember) {
             String encodedPW = passwordEncoder.encode(memberDto.getPw());
             memberDto.setPw(encodedPW);
-            int result = memberDao.insertMember(memberDto);
+//            int result = memberDao.insertMember(memberDto);
+            int result = memberMapper.insertMember(memberDto);
 
             if (result > 0)
                 return USER_SIGNUP_SUCCESS;
@@ -57,7 +63,8 @@ public class MemberService {
     public String signinConfirm(MemberDto memberDto) {
         System.out.println(CLASS_NAME.concat("signinConfirm()"));
 
-        MemberDto dto = memberDao.selectMemberByID(memberDto.getId());
+//        MemberDto dto = memberDao.selectMemberByID(memberDto.getId());
+        MemberDto dto = memberMapper.selectMemberByID(memberDto.getId());
         if (dto != null && passwordEncoder.matches(memberDto.getPw(), dto.getPw())) {
             System.out.println(CLASS_NAME.concat("MEMBER LOGIN SUCCESS!!"));
             return dto.getId();
@@ -73,7 +80,8 @@ public class MemberService {
     public MemberDto modify(String loginedID) {
         System.out.println(CLASS_NAME.concat("modify()"));
 
-        return memberDao.selectMemberByID(loginedID);
+//        return memberDao.selectMemberByID(loginedID);
+        return memberMapper.selectMemberByID(loginedID);
 
     }
 
@@ -83,7 +91,8 @@ public class MemberService {
         String encodedPW = passwordEncoder.encode(memberDto.getPw());
         memberDto.setPw(encodedPW);
 
-        return memberDao.updateMember(memberDto);
+//        return memberDao.updateMember(memberDto);
+        return memberMapper.updateMember(memberDto);
 
     }
 
@@ -91,7 +100,8 @@ public class MemberService {
         System.out.println(CLASS_NAME.concat("findpasswordConfirm()"));
 
         // 1. 인증
-        MemberDto selectedMemberDto = memberDao.selectMemberByIDAndMail(memberDto);
+//        MemberDto selectedMemberDto = memberDao.selectMemberByIDAndMail(memberDto);
+        MemberDto selectedMemberDto = memberMapper.selectMemberByIDAndMail(memberDto);
 
         int result = 0;
         if (selectedMemberDto != null) {
@@ -99,7 +109,8 @@ public class MemberService {
             String newPassword = createNewPassword();
 
             // 3. DB 업데이터
-            result = memberDao.updatePassword(memberDto.getId(), passwordEncoder.encode(newPassword));
+//            result = memberDao.updatePassword(memberDto.getId(), passwordEncoder.encode(newPassword));
+            result = memberMapper.updatePassword(memberDto.getId(), passwordEncoder.encode(newPassword));
 
             if (result > 0) {
                 // 4. 새 비밀번호 메일 발송
