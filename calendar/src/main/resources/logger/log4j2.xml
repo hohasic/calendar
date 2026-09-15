@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration status="WARN">
 
+    <!-- 로그 설정에 사용할 변수를 설정 -->
+    <Properties>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss} %-5p [%c{3}] - %m%n</Property>
+        <Property name="LOG_PATH">logs</Property>
+    </Properties>
 
+    <!-- 로그를 출력할 대상 설정 -->
+    <Appenders>
+        <!-- 콘솔 출력 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}" />
+        </Console>
+
+        <!-- 파일 기록 -->
+        <File name="FileByInfo" fileName="${LOG_PATH}/spring-info.log">
+            <PatternLayout pattern="${LOG_PATTERN}" />
+            <Filters>
+                <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+        </File>
+    </Appenders>
+
+    <!-- 로그를 남기를 로거(Logger) 설정 -->
+    <Loggers>
+        <!-- 기본 로거 -->
+        <Root level="info">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="FileByInfo" />
+        </Root>
+    </Loggers>
 
 </configuration>
