@@ -14,13 +14,57 @@
             <PatternLayout pattern="${LOG_PATTERN}" />
         </Console>
 
-        <!-- 파일 기록 -->
-        <File name="FileByInfo" fileName="${LOG_PATH}/spring-info.log">
+        <!-- 파일 기록 : ROOT -->
+        <File name="FileForRootByInfo" fileName="${LOG_PATH}/spring-root-info.log">
             <PatternLayout pattern="${LOG_PATTERN}" />
             <Filters>
                 <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
             </Filters>
         </File>
+
+        <!-- 파일 기록 : Application -->
+        <!-- INFO+ -->
+        <!--
+        <File name="FileForAppByInfo" fileName="${LOG_PATH}/spring-app-info.log">
+            <PatternLayout pattern="${LOG_PATTERN}" />
+            <Filters>
+                <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+        </File>
+        -->
+
+        <!-- DEBUG -->
+        <File name="FileForAppByDebug" fileName="${LOG_PATH}/spring-app-debug.log">
+            <PatternLayout pattern="${LOG_PATTERN}" />
+            <Filters>
+                <LevelRangeFilter minLevel="DEBUG" maxLevel="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </File>
+
+        <!-- INFO -->
+        <File name="FileForAppByInfo" fileName="${LOG_PATH}/spring-app-info.log">
+            <PatternLayout pattern="${LOG_PATTERN}" />
+            <Filters>
+                <LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </File>
+
+        <!-- WARN -->
+        <File name="FileForAppByWarn" fileName="${LOG_PATH}/spring-app-warn.log">
+            <PatternLayout pattern="${LOG_PATTERN}" />
+            <Filters>
+                <LevelRangeFilter minLevel="WARN" maxLevel="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </File>
+
+        <!-- ERROR -->
+        <File name="FileForAppByError" fileName="${LOG_PATH}/spring-app-error.log">
+            <PatternLayout pattern="${LOG_PATTERN}" />
+            <Filters>
+                <LevelRangeFilter minLevel="ERROR" maxLevel="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </File>
+
     </Appenders>
 
     <!-- 로그를 남기를 로거(Logger) 설정 -->
@@ -28,8 +72,18 @@
         <!-- 기본 로거 -->
         <Root level="info">
             <AppenderRef ref="Console" />
-            <AppenderRef ref="FileByInfo" />
+            <AppenderRef ref="FileForRootByInfo" />
         </Root>
+
+        <!-- 애플리케이션 로거 -->
+        <Logger name="com.office" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+            <!-- <AppenderRef ref="FileForAppByInfo"/> -->   <!-- INFO+ -->
+            <AppenderRef ref="FileForAppByDebug"/>   <!-- DEBUG -->
+            <AppenderRef ref="FileForAppByInfo"/>   <!-- INFO -->
+            <AppenderRef ref="FileForAppByWarn"/>   <!-- WARN -->
+            <AppenderRef ref="FileForAppByError"/>   <!-- ERROR -->
+        </Logger>
     </Loggers>
 
 </configuration>

@@ -13,7 +13,10 @@ public class HomeController {
     @GetMapping({"", "/"})
     public String home() {
 //        System.out.println(CLASS_NAME.concat("home()"));
-        log.info("home()");
+        log.debug("DEBUG:: home()");
+        log.info("INFO:: home()");
+        log.warn("WARN:: home()");
+        log.error("ERROR:: home()");
 
         String nextPage = "home";
 
