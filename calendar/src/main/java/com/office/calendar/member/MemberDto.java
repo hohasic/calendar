@@ -1,6 +1,10 @@
 package com.office.calendar.member;
 
+import com.office.calendar.member.jpa.MemberEntity;
 import lombok.*;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 //@Getter
 //@Setter
@@ -18,5 +22,21 @@ public class MemberDto {
     private int authority_no;       // 사용자 권한 번호
     private String reg_date;        // 사용자 정보 등록일
     private String mod_date;        // 사용자 정보 수정일
+
+    public MemberEntity toEntity() {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        return MemberEntity.builder()
+                .memNo(no)
+                .memId(id)
+                .memPw(pw)
+                .memMail(mail)
+                .memAuthorityNo(authority_no)
+                .memRegDate(reg_date != null ? LocalDateTime.parse(reg_date, formatter) : null)
+                .memModDate(mod_date != null ? LocalDateTime.parse(mod_date, formatter) : null)
+                .build();
+
+    }
 
 }
