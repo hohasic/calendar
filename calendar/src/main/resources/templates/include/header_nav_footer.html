@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
     <header th:fragment="header">
         <div id="top">
@@ -9,6 +10,7 @@
         <div id="header_wrap">
             <a th:href="@{/}">home</a> &nbsp;&nbsp;
 
+            <!--
             <span th:if="${session.loginedID == null}">
                 <a th:href="@{/member/signup}">sign-up</a> &nbsp;&nbsp;
                 <a th:href="@{/member/signin}">sign-in</a> &nbsp;&nbsp;
@@ -18,6 +20,17 @@
                  <a th:href="@{/member/modify}">modify</a> &nbsp;&nbsp;
                 <a th:href="@{/member/signout_confirm}">signout</a> &nbsp;&nbsp;
             </span>
+            -->
+
+            <th:block sec:authorize="!hasAnyRole('PRE_USER', 'USER')">
+                <a th:href="@{/member/signup}">sign-up</a> &nbsp;&nbsp;
+                <a th:href="@{/member/signin}">sign-in</a>
+            </th:block>
+
+            <th:block sec:authorize="hasAnyRole('PRE_USER', 'USER')">
+                <a th:href="@{/member/modify}">modify</a> &nbsp;&nbsp;
+                <a th:href="@{/member/signout_confirm}">signout</a>
+            </th:block>
 
         </div>
     </header>

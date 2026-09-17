@@ -1,12 +1,15 @@
 package com.office.calendar.member;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+@Slf4j
 @Controller
 @RequestMapping("/member")
 public class MemberController {
@@ -31,7 +34,7 @@ public class MemberController {
     }
 
     // 회원가입 확인
-    @PostMapping("signup_confirm")
+    @PostMapping("/signup_confirm")
     public String signupConfirm(MemberDto memberDto, Model model) {
         System.out.println(CLASS_NAME.concat("signupConfirm()"));
 
@@ -56,6 +59,7 @@ public class MemberController {
     }
 
     // 로그인 확인 /signin_confirm
+    /*
     @PostMapping("/signin_confirm")
     public String signinConfirm(MemberDto memberDto,
                                 Model model,
@@ -75,8 +79,10 @@ public class MemberController {
         return nextPage;
 
     }
+    */
 
     // 로그 아웃 /signout_confirm
+    /*
     @GetMapping("/signout_confirm")
     public String signoutConfirm(HttpSession session) {
         System.out.println(CLASS_NAME.concat("signoutConfirm()"));
@@ -88,6 +94,7 @@ public class MemberController {
         return nextPage;
 
     }
+    */
 
     // 계정 수정 양식(/member/modify)
     @GetMapping("/modify")
@@ -138,6 +145,19 @@ public class MemberController {
 
         int result = memberService.findpasswordConfirm(memberDto);
         model.addAttribute("result", result);
+
+        return nextPage;
+
+    }
+
+    @GetMapping("/signin_result")
+    public String signinResult(
+            @RequestParam(value = "loginedID", required = false) String loginedID,
+            Model model) {
+        log.info("signinResult");
+
+        String nextPage = "member/signin_result";
+        model.addAttribute("loginedID", loginedID);
 
         return nextPage;
 
