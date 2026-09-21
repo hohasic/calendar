@@ -39,6 +39,7 @@ public class SecurityConfig {
                                 "/member/signin_confirm",
                                 "/member/findpassword",
                                 "/member/findpassword_confirm").permitAll()
+                        .requestMatchers("/planner/**").hasAnyRole("USER")
                         .anyRequest().authenticated()
                 );
 
