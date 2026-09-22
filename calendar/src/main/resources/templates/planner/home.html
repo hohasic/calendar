@@ -9,6 +9,8 @@
     <link rel="stylesheet" th:href="@{/css/header_nav_footer.css}">
     <link rel="stylesheet" th:href="@{/css/planner.css}">
 
+    <script src="/js/planner.js"></script>
+
 </head>
 <body>
 
@@ -49,9 +51,28 @@
                     <option value="10">10</option>
                     <option value="11">11</option>
                     <option value="12">12</option>
-                </select>
+                </select>월 &nbsp;&nbsp;
 
                 <a class="btn_next" href="#none"> &nbsp;&nbsp; &#62; &nbsp;&nbsp; </a>
+            </div>
+
+            <div class="calendar_wrap">
+                <table class="table_calender" id="table_calender">
+                    <thead>
+                        <tr>
+                            <th>일요일</th>
+                            <th>월요일</th>
+                            <th>화요일</th>
+                            <th>수요일</th>
+                            <th>목요일</th>
+                            <th>금요일</th>
+                            <th>토요일</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
             </div>
 
         </div>
