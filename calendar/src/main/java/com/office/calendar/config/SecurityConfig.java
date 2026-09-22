@@ -1,5 +1,6 @@
 package com.office.calendar.config;
 
+import com.office.calendar.member.security.MemberAccessDeniedHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -76,6 +77,11 @@ public class SecurityConfig {
                             response.sendRedirect(targetURI);
 
                         }));
+
+        http
+                .exceptionHandling(exception -> exception
+                        .accessDeniedHandler(new MemberAccessDeniedHandler())
+                );
 
         return http.build();
 
