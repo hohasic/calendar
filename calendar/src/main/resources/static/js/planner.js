@@ -23,6 +23,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // 현재 (<tr> UI)
     addCalenderTr();
 
+    // 이벤트 핸들러 등록
+    initEvents();
+
 });
 
 // 현재
@@ -74,6 +77,10 @@ function addCalenderTr() {
 
     let dateIndex = 0;
     for (let i = 0; i < 6; i++) {
+
+        if (i >= 5 && dates[dateIndex] === 0)
+            break;
+
         let tr = document.createElement('tr');
 
         for (let j = 0; j < 7; j++) {
@@ -96,5 +103,151 @@ function addCalenderTr() {
 
     }
 
+}
+
+// 이벤트 등록
+function initEvents() {
+    console.log('initEvents()');
+
+    // click 이벤트 들 처리
+    document.addEventListener('click', function (event) {
+
+        // 이전달 에서 이벤트 발생 시
+        if (event.target.matches('#section_wrap .btn_pre')) {
+            console.log('btn_pre CLICKED!!');
+            setPreMonth();
+        }
+
+        // 다음달 에서 이벤트 발생 시
+        if (event.target.matches('#section_wrap .btn_next')) {
+            console.log('btn_next CLICKED!!');
+            setNextMonth();
+        }
+
+    });
+
+    // change 이벤트 들 처리
+    document.addEventListener('change', function (event) {
+
+        // 달력에서 년 변경 시
+        if (event.target.matches('#section_wrap select[name="p_year"]')) {
+            setMonthBySelectChanged();
+        }
+
+        // 달력에서 월 변경 시
+        if (event.target.matches('#section_wrap select[name="p_month"]')) {
+            setMonthBySelectChanged();
+        }
+
+    });
+}
+
+function setPreMonth() {
+    console.log('setPreMonth()');
+
+    let yearSelect = document.querySelector('select[name="p_year"]');
+    let monthSelect = document.querySelector('select[name="p_month"]');
+
+    if (yearSelect.value == 2025 && monthSelect.value == 1) {
+        alert('2025년 1월 이전은 설정할 수 없습니다.');
+        return false;
+    }
+
+    let temp_year = current_year;
+    let temp_month = current_month - 1;
+
+    if (temp_month <= -1) {
+        temp_year -= 1;
+        temp_month = 11;
+    }
+
+    let preCalender = new Date(temp_year, temp_month, 1);
+
+    // 현재 데이터 설정
+    setCurrentCalender(
+        preCalender.getFullYear(),
+        preCalender.getMonth(),
+        preCalender.getDate(),
+        preCalender.getDay()
+    )
+
+    // UI(<select>) 렌더링
+    setCurrentYearAndMonthSelectUI();
+
+    //  UI(<tr>) 제거
+    removeCalenderTr();
+
+    // UI(<tr>) 렌더링
+    addCalenderTr();
+
+}
+
+function setNextMonth() {
+    console.log('setNextMonth()');
+
+    let yearSelect = document.querySelector('select[name="p_year"]');
+    let monthSelect = document.querySelector('select[name="p_month"]');
+
+    if (yearSelect.value == 2030 && monthSelect.value == 12) {
+        alert('2030년 12월 이후는 설정할 수 없습니다.');
+        return false;
+    }
+
+    let temp_year = current_year;
+    let temp_month = current_month + 1;
+
+    if (temp_month >= 12) {
+        temp_year += 1;
+        temp_month = 0;
+    }
+
+    let nextCalender = new Date(temp_year, temp_month, 1);
+
+    // 현재 데이터 설정
+    setCurrentCalender(
+        nextCalender.getFullYear(),
+        nextCalender.getMonth(),
+        nextCalender.getDate(),
+        nextCalender.getDay()
+    )
+
+    // UI(<select>) 렌더링
+    setCurrentYearAndMonthSelectUI();
+
+    //  UI(<tr>) 제거
+    removeCalenderTr();
+
+    // UI(<tr>) 렌더링
+    addCalenderTr();
+
+}
+
+function removeCalenderTr() {
+    console.log('removeCalenderTr() CALLED!!');
+
+    let tbody = document.querySelector('#table_calender tbody');
+    tbody.innerHTML = '';
+
+}
+
+function setMonthBySelectChanged() {
+    console.log('setMonthBySelectChanged() CALLED!!');
+
+    let temp_year = document.querySelector('select[name="p_year"]').value;
+    let temp_month = document.querySelector('select[name="p_month"]').value - 1;
+
+    let seletedCalender = new Date(temp_year, temp_month, 1);
+
+    // 데이터 설정
+    setCurrentCalender(
+        seletedCalender.getFullYear(),
+        seletedCalender.getMonth(),
+        seletedCalender.getDate(),
+        seletedCalender.getDay()
+    );
+
+    // 달력 UI 렌더링
+    removeCalenderTr();
+    addCalenderTr();
 
 }
