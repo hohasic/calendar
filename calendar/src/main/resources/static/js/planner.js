@@ -181,9 +181,14 @@ function initEvents() {
                 document.querySelector('#write_plan input[name="p_file"]').focus();
 
             } else {
+                let inputFile = document.querySelector('#write_plan input[name="p_file"]');
+                console.log('inputFile: ', inputFile);
+
+                let files = inputFile.files;
+                console.log('files: ', files);
+
                 // 비동기 방식으로 서버에 전송
-
-
+                fetchWritePlan(year, month, date, title, body, files[0]);
 
             }
 
@@ -385,4 +390,40 @@ function setSelectDateOptions(year, month, select_name) {   // 2026 9
         option.textContent = i;
         selectElement.appendChild(option);
     }
+}
+
+async function fetchWritePlan(year, month, date, title, body, file) {
+    console.log('fetchWritePlan() CALLED!!');
+
+    let formData = new FormData();
+    formData.append("year", year);
+    formData.append("month", month);
+    formData.append("date", date);
+    formData.append("title", title);
+    formData.append("body", body);
+    formData.append("file", file);
+
+    try {
+        let response = await fetch('/planner/plan', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        console.log('fetchWritePlan() COMMUNICATION SUCCESS!! ');
+
+        let data = await response.json();
+        console.log('data: ', data);
+
+    } catch (error) {
+        console.log('fetchWritePlan() COMMUNICATION ERROR!! ', error);
+        alert('일정 등록에 문제가 발생 했습니다.');
+
+    }
+
+
+
 }
