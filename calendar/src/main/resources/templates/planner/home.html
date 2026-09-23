@@ -26,6 +26,7 @@
 
         <div class="content">
 
+            <!-- 년, 월 선택 select -->
             <div class="select_wrap">
                 <a class="btn_pre" href="#none"> &nbsp;&nbsp; &#60; &nbsp;&nbsp; </a>
 
@@ -56,6 +57,7 @@
                 <a class="btn_next" href="#none"> &nbsp;&nbsp; &#62; &nbsp;&nbsp; </a>
             </div>
 
+            <!-- 달력 테이블 -->
             <div class="calendar_wrap">
                 <table class="table_calender" id="table_calender">
                     <thead>
@@ -73,6 +75,50 @@
 
                     </tbody>
                 </table>
+            </div>
+
+            <!-- 일정 등록 모달 -->
+            <div id="write_plan">
+                <div class="write_plan_wrap">
+
+                    <div class="year_month_date">
+                        <select name="wp_year">
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
+                            <option value="2029">2029</option>
+                            <option value="2030">2030</option>
+                        </select>년 &nbsp;&nbsp;
+                        <select name="wp_month">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>월 &nbsp;&nbsp;
+                        <select name="wp_date">
+                        </select>
+                    </div>
+                    <div class="title_body">
+                        <form>
+                            <input type="text" name="p_title" placeholder="INPUT PLAN TITLE"><br>
+                            <input type="text" name="p_body" placeholder="INPUT PLAN BODY"><br>
+                            <input type="file" name="p_file" placeholder="SELECT IMAGE FILE"><br><br>
+                            <input type="button" value="WRITE">
+                            <input type="reset" value="RESET">
+                            <input type="button" value="CANCEL">
+                        </form>
+                    </div>
+
+                </div>
             </div>
 
         </div>
