@@ -23,6 +23,9 @@ public class PlannerService {
     final public int PLAN_REMOVE_SUCCESS = 1;
     final public int PLAN_REMOVE_FAIL = 0;
 
+    final public int PLAN_MODIFY_SUCCESS = 1;
+    final public int PLAN_MODIFY_FAIL = 0;
+
     final private PlannerRepository plannerRepository;
 
     // 일정 등록
@@ -99,6 +102,36 @@ public class PlannerService {
 
         } else {
             log.info("REMOVE PLAN FAIL!!");
+
+        }
+
+        resultMap.put("result", result);
+
+        return resultMap;
+
+    }
+
+    @Transactional
+    public Map<String, Object> modifyPlan(PlannerDto plannerDto) {
+        log.info("modifyPlan()");
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        int result = PLAN_MODIFY_FAIL;
+
+        PlannerEntity plannerEntity = plannerRepository.findByPlanNo(plannerDto.getNo());
+        if (plannerEntity != null) {
+            plannerEntity.setPlanYear(plannerDto.getYear());
+            plannerEntity.setPlanMonth(plannerDto.getMonth());
+            plannerEntity.setPlanDate(plannerDto.getDate());
+            plannerEntity.setPlanTitle(plannerDto.getTitle());
+            plannerEntity.setPlanBody(plannerDto.getBody());
+
+            if (plannerDto.getImg_name() != null) {
+                plannerEntity.setPlanImgName(plannerDto.getImg_name());
+            }
+
+            result = PLAN_MODIFY_SUCCESS;
 
         }
 

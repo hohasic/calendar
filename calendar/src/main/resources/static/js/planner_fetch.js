@@ -167,3 +167,45 @@ async function fetchRemovePlan(no) {
     }
 
 }
+
+async function fetchModifyPlan(no, year, month, date, title, body, file) {
+    console.log('fetchModifyPlan() CALLED!!');
+
+    let formData = new FormData();
+    formData.append('year', year);
+    formData.append('month', month);
+    formData.append('date', date);
+    formData.append('title', title);
+    formData.append('body', body);
+
+    if (file != null || file != undefined) {
+        formData.append('file', file);
+    }
+
+    try {
+        let response = await fetch(`/planner/plan/${no}`, {   // /planner/plan/2
+            method: 'PUT',
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        console.log('fetchModifyPlan() COMMUNICATION SUCCESS!! ');
+
+        let data = await response.json();
+        console.log('data: ', data);
+
+        alert('일정이 정상적으로 수정 되었습니다.');
+
+    } catch (error) {
+        console.log('fetchModifyPlan() COMMUNICATION ERROR!! ', error);
+        alert('일정 수정에 문제가 발생했습니다.');
+
+    } finally {
+        hideDetailPlanView();
+
+    }
+
+}

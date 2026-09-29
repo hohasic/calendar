@@ -235,6 +235,26 @@ function initEvents() {
 
         }
 
+        // 일정 수정 버튼 클릭 시
+        if (event.target.matches('#show_plan input[value="MODIFY"]')) {
+            console.log('MODIFY BUTTON CLICKED!!');
+
+            let no = event.target.getAttribute("data-no");
+            console.log('no: ', no);
+
+            let year = document.querySelector('#show_plan select[name="dp_year"]').value;
+            let month = document.querySelector('#show_plan select[name="dp_month"]').value;
+            let date = document.querySelector('#show_plan select[name="dp_date"]').value;
+
+            let title = document.querySelector('#show_plan input[name="p_title"]').value;
+            let body = document.querySelector('#show_plan input[name="p_body"]').value;
+
+            let fileInput = document.querySelector('#show_plan input[name="p_file"]');
+            let file = fileInput.files.length > 0 ? fileInput.files[0] : null;
+
+            fetchModifyPlan(no, year, month, date, title, body, file);
+
+        }
 
     });
 
@@ -270,6 +290,28 @@ function initEvents() {
             let month = event.target.value
 
             setSelectDateOptions(year, month, 'wp_date');
+
+        }
+
+        // 일정 상세 모달에서 년 변경 시
+        if (event.target.matches('#show_plan select[name="dp_year"]')) {
+            console.log('dp_year CHANGED!!');
+
+            let year = event.target.value;
+            let month = document.querySelector('#show_plan select[name="dp_month"]').value;
+
+            setSelectDateOptions(year, month, 'dp_date');
+
+        }
+
+        // 일정 상세 모달에서 월 변경 시
+        if (event.target.matches('#show_plan select[name="dp_month"]')) {
+            console.log('dp_month CHANGED!!');
+
+            let year = document.querySelector('#show_plan select[name="dp_year"]').value;
+            let month = event.target.value;
+
+            setSelectDateOptions(year, month, 'dp_date');
 
         }
 
