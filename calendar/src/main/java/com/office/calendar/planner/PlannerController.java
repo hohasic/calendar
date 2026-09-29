@@ -117,14 +117,17 @@ public class PlannerController {
                 return ResponseEntity.ok(resultMap);
 
             } else {
-                return ResponseEntity.badRequest().body(null);
+                Map<String, Object> errorMap = new HashMap<>();
+                errorMap.put("message", "File upload Fail");
+                return ResponseEntity.badRequest().body(errorMap);
 
             }
 
+        } else {
+            Map<String, Object> resultMap = plannerService.modifyPlan(plannerDto);
+            return ResponseEntity.ok(resultMap);
+
         }
-
-
-        return ResponseEntity.ok(null);
 
     }
 

@@ -197,7 +197,17 @@ async function fetchModifyPlan(no, year, month, date, title, body, file) {
         let data = await response.json();
         console.log('data: ', data);
 
-        alert('일정이 정상적으로 수정 되었습니다.');
+        if (!data || data.result <= 0) {
+            alert('일정 수정에 문제가 발생했습니다.');
+
+        } else {
+            alert('일정이 정상적으로 수정 되었습니다.');
+
+        }
+
+        removeCalenderTr();
+        addCalenderTr();
+        fetchGetCurrentMonthPlans();
 
     } catch (error) {
         console.log('fetchModifyPlan() COMMUNICATION ERROR!! ', error);
